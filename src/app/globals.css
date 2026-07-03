@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  /* Warm beige palette */
-  --background: #ece2cf;
-  --foreground: #4a4034;
+  /* White background with a purple accent */
+  --background: #ffffff;
+  --foreground: #4a2e7a;
 }
 
 @theme inline {
@@ -15,10 +15,10 @@
 
 body {
   background:
-    radial-gradient(120% 80% at 50% -10%, #f7f0df 0%, transparent 55%),
-    radial-gradient(90% 70% at 100% 10%, #efe0c4 0%, transparent 50%),
-    radial-gradient(80% 80% at 0% 100%, #e5d6bb 0%, transparent 55%),
-    linear-gradient(160deg, #efe6d3 0%, #e6dac0 100%);
+    radial-gradient(120% 80% at 50% -10%, #f6f0fd 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 8%, #efe6fb 0%, transparent 50%),
+    radial-gradient(80% 80% at 0% 100%, #f3ecfc 0%, transparent 55%),
+    linear-gradient(160deg, #ffffff 0%, #f7f2fe 100%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -78,22 +78,27 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 30px;
+  top: 122px;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
+  padding: 0 16px;
   z-index: 3;
   pointer-events: none;
 }
 .env-title {
   font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 40px;
-  line-height: 1;
-  color: #7c5c30;
-  /* Extruded 3D lettering: stacked layers + a soft cast shadow */
-  text-shadow: 0 1px 0 #d9c096, 0 2px 0 #cbaf82, 0 3px 0 #bd9d6f,
-    0 4px 8px rgba(74, 54, 26, 0.4);
+  font-size: 34px;
+  line-height: 1.05;
+  max-width: 280px;
+  text-align: center;
+  color: #6b4aa6;
+  /* Extruded 3D lettering: stacked purple layers + a soft cast shadow */
+  text-shadow: 0 1px 0 #5f3f97, 0 2px 0 #543688, 0 3px 0 #492f78,
+    0 5px 9px rgba(46, 28, 74, 0.4);
 }
 .env-subtitle {
   margin-top: 4px;
@@ -212,21 +217,21 @@ body {
   animation: twinkle 2.6s ease-in-out infinite;
 }
 
-/* Luxurious card: subtle gradient sheet with a gold hairline */
+/* Luxurious card: subtle white→lavender gradient sheet with a purple hairline */
 .lux-card {
-  background: linear-gradient(165deg, #faf5e9 0%, #f2e8d3 60%, #ede0c6 100%);
-  border: 1px solid rgba(184, 151, 95, 0.35);
-  box-shadow: 0 40px 70px -35px rgba(90, 68, 34, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(165deg, #ffffff 0%, #faf7ff 55%, #f4eefc 100%);
+  border: 1px solid rgba(139, 95, 191, 0.22);
+  box-shadow: 0 40px 70px -35px rgba(74, 44, 110, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* Thin gold divider gradient */
+/* Thin purple divider gradient */
 .gold-rule {
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(184, 151, 95, 0.7),
+    rgba(139, 95, 191, 0.55),
     transparent
   );
 }

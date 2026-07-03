@@ -5,10 +5,10 @@
 
 export const party = {
   // Small line above the title.
-  eyebrow: "You're invited! SHHHH 🤫",
+  eyebrow: "You're Invited! SHHHH 🤫",
 
   // The big title of the invitation.
-  title: "He's Proposing!",
+  title: "He's about to ask her forever!",
 
   // Who / what it's for. Leave "" to hide.
   subtitle: "to celebrate Maria",
@@ -25,18 +25,15 @@ export const party = {
 
   // Optional extras — set to "" to hide.
   dressCode: "Smart casual",
-  note: "Please arrive 15 minutes early so we're all in place before she walks in.",
+  note: "",
 
   // The big reminder that it's a secret.
   secretNote: "It's a surprise, kindly no word to Maria!",
 
   // Lettering on the front of the closed envelope (elegant script).
-  envelopeText: "You're Invited",
+  envelopeText: "Can you keep a secret?",
   // Small line under it — set to "" to hide.
-  envelopeSubtext: "the celebration of a lifetime",
-
-  // Initials on the wax seal of the envelope.
-  sealInitials: "G & M",
+  envelopeSubtext: "",
 
   // Signature at the bottom of the invitation. Leave "" to hide.
   signature: "With love, Georgio & Maria",
@@ -45,8 +42,9 @@ export const party = {
   rsvp: {
     prompt: "Will you join us?",
     intro: "Add your name and a message to confirm you'll be there.",
-    // Let guests say how many people are coming with them.
-    askGuestCount: false,
+    // Show a "+1" checkbox so guests can bring one extra person.
+    askPlusOne: true,
+    plusOneLabel: "I'm bringing a +1",
     // Let guests leave a short note.
     askMessage: true,
     messageLabel: "A message for the couple",

@@ -38,11 +38,10 @@ export default function Invite() {
               )}
             </span>
             <span className="env-flap" />
-            <span className="env-seal">{party.sealInitials}</span>
           </button>
         </div>
         <p
-          className={`text-sm uppercase tracking-[0.35em] text-[#8a7b60] ${
+          className={`text-sm uppercase tracking-[0.35em] text-[#9166cc] ${
             opening ? "opacity-0" : "animate-softpulse"
           } transition-opacity`}
         >
@@ -59,7 +58,7 @@ export default function Invite() {
         <ScrollHint />
         <RsvpSection />
         {party.signature && (
-          <p className="mt-14 text-center font-serif text-lg italic text-[#7c6c52]">
+          <p className="mt-14 text-center font-serif text-lg italic text-[#7c5aa6]">
             {party.signature}
           </p>
         )}
@@ -74,15 +73,15 @@ function Letter() {
     <section className="lux-card overflow-hidden rounded-[24px] px-7 py-12 text-center sm:px-12">
       <RingGraphic className="mx-auto -mt-2 mb-2 h-32 w-32 sm:h-40 sm:w-40" />
 
-      <p className="text-xs uppercase tracking-[0.4em] text-[#a5865a]">
+      <p className="text-xs uppercase tracking-[0.4em] text-[#9166cc]">
         {party.eyebrow}
       </p>
 
-      <h1 className="mt-5 font-serif text-4xl leading-tight text-[#4a4034] sm:text-5xl">
+      <h1 className="mt-5 font-serif text-4xl leading-tight text-[#4a2e7a] sm:text-5xl">
         {party.title}
       </h1>
       {party.subtitle && (
-        <p className="mt-3 font-serif text-xl italic text-[#7c6c52]">
+        <p className="mt-3 font-serif text-xl italic text-[#7c5aa6]">
           {party.subtitle}
         </p>
       )}
@@ -90,9 +89,9 @@ function Letter() {
       <Ornament />
 
       <dl className="flex flex-col gap-6">
-        <Detail label="When" value={[party.date, party.time]} />
+        <Detail label="" value={[party.date, party.time]} />
         <Detail
-          label="Where"
+          label=""
           value={[party.location, party.address]}
           href={party.mapUrl}
         />
@@ -100,13 +99,13 @@ function Letter() {
       </dl>
 
       {party.note && (
-        <p className="mx-auto mt-8 max-w-sm text-sm leading-relaxed text-[#8a7b60]">
+        <p className="mx-auto mt-8 max-w-sm text-sm leading-relaxed text-[#726a92]">
           {party.note}
         </p>
       )}
 
       {party.secretNote && (
-        <p className="mx-auto mt-6 max-w-sm rounded-2xl border border-[#d3bd93] bg-[#efe4cc] px-5 py-3 text-sm leading-relaxed text-[#6f5f43]">
+        <p className="mx-auto mt-6 max-w-sm rounded-2xl border border-[#dcccf5] bg-[#f0e9fb] px-5 py-3 text-sm leading-relaxed text-[#5b447f]">
           🤫 {party.secretNote}
         </p>
       )}
@@ -129,10 +128,10 @@ function Detail({
   if (parts.length === 0) return null;
   return (
     <div>
-      <dt className="text-xs uppercase tracking-[0.3em] text-[#a5865a]">
+      <dt className="text-xs uppercase tracking-[0.3em] text-[#9166cc]">
         {label}
       </dt>
-      <dd className="mt-1 font-serif text-lg text-[#4a4034]">
+      <dd className="mt-1 font-serif text-lg text-[#4a2e7a]">
         {parts.map((p, i) => (
           <span key={i} className="block">
             {p}
@@ -144,7 +143,7 @@ function Detail({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#d8c6a0] bg-[#fffdf7]/60 px-3.5 py-1.5 text-xs font-medium tracking-wide text-[#8a6f45] transition-colors hover:border-[#a5865a] hover:text-[#4a4034]"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#e2d8f2] bg-[#ffffff]/60 px-3.5 py-1.5 text-xs font-medium tracking-wide text-[#7c5aa6] transition-colors hover:border-[#9166cc] hover:text-[#4a2e7a]"
         >
           <span aria-hidden>📍</span> View on Google Maps
         </a>
@@ -155,7 +154,7 @@ function Detail({
 
 function Ornament() {
   return (
-    <div className="my-9 flex items-center justify-center gap-4 text-[#c2a877]">
+    <div className="my-9 flex items-center justify-center gap-4 text-[#a98fd0]">
       <span className="gold-rule w-16" />
       <span className="text-lg">❦</span>
       <span className="gold-rule w-16" />
@@ -165,7 +164,7 @@ function Ornament() {
 
 function ScrollHint() {
   return (
-    <div className="animate-softpulse mt-8 flex flex-col items-center gap-1 text-[#a5865a]">
+    <div className="animate-softpulse mt-8 flex flex-col items-center gap-1 text-[#9166cc]">
       <span className="text-xs uppercase tracking-[0.3em]">Scroll to RSVP</span>
       <span aria-hidden className="text-lg">
         ↓
@@ -196,11 +195,11 @@ function RsvpSection() {
       {state?.ok ? (
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="text-5xl">{state.attending ? "🎉" : "💛"}</div>
-          <p className="max-w-sm font-serif text-xl text-[#4a4034]">
+          <p className="max-w-sm font-serif text-xl text-[#4a2e7a]">
             {state.attending ? party.rsvp.thanksYes : party.rsvp.thanksNo}
           </p>
           {!state.saved && (
-            <p className="text-xs text-[#a5967a]">
+            <p className="text-xs text-[#9a8fc0]">
               (Shown here only — connect the database to keep RSVPs.)
             </p>
           )}
@@ -208,17 +207,17 @@ function RsvpSection() {
       ) : (
         <form action={formAction} className="flex flex-col gap-5">
           <div className="text-center">
-            <h2 className="font-serif text-2xl text-[#4a4034]">
+            <h2 className="font-serif text-2xl text-[#4a2e7a]">
               {party.rsvp.prompt}
             </h2>
-            <p className="mt-2 text-sm text-[#8a7b60]">{party.rsvp.intro}</p>
+            <p className="mt-2 text-sm text-[#726a92]">{party.rsvp.intro}</p>
           </div>
 
           <input
             name="name"
             required
             placeholder="Your name"
-            className="w-full rounded-xl border border-[#d8c6a0] bg-[#fffdf7] px-4 py-3 text-[#4a4034] placeholder:text-[#b3a488] focus:border-[#a5865a] focus:outline-none"
+            className="w-full rounded-xl border border-[#e2d8f2] bg-[#ffffff] px-4 py-3 text-[#4a2e7a] placeholder:text-[#b3a6d0] focus:border-[#9166cc] focus:outline-none"
           />
 
           <input type="hidden" name="attending" value={attending} />
@@ -235,12 +234,24 @@ function RsvpSection() {
             />
           </div>
 
+          {party.rsvp.askPlusOne && attending === "yes" && (
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e2d8f2] bg-[#faf7ff] px-4 py-3 text-sm text-[#4a2e7a] transition-colors hover:border-[#8b5fbf]">
+              <input
+                type="checkbox"
+                name="guests"
+                value="1"
+                className="h-5 w-5 accent-[#7a4bb8]"
+              />
+              {party.rsvp.plusOneLabel}
+            </label>
+          )}
+
           {party.rsvp.askMessage && (
             <textarea
               name="message"
               rows={4}
               placeholder={party.rsvp.messageLabel}
-              className="w-full rounded-xl border border-[#d8c6a0] bg-[#fffdf7] px-4 py-3 text-[#4a4034] placeholder:text-[#b3a488] focus:border-[#a5865a] focus:outline-none"
+              className="w-full rounded-xl border border-[#e2d8f2] bg-[#ffffff] px-4 py-3 text-[#4a2e7a] placeholder:text-[#b3a6d0] focus:border-[#9166cc] focus:outline-none"
             />
           )}
 
@@ -251,7 +262,7 @@ function RsvpSection() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-1 rounded-full bg-gradient-to-b from-[#c2a06e] to-[#9a7a4b] px-8 py-3.5 font-medium tracking-wide text-[#fdf8ee] shadow-[0_12px_24px_-8px_rgba(120,90,45,0.6),inset_0_1px_0_rgba(255,255,255,0.35)] transition-transform hover:scale-[1.02] hover:from-[#cba97a] hover:to-[#a5865a] disabled:opacity-60"
+            className="mt-1 rounded-full bg-gradient-to-b from-[#8f63c9] to-[#6b3fa8] px-8 py-3.5 font-medium tracking-wide text-white shadow-[0_12px_24px_-8px_rgba(74,44,110,0.55),inset_0_1px_0_rgba(255,255,255,0.3)] transition-transform hover:scale-[1.02] hover:from-[#9b74d3] hover:to-[#7a4bb8] disabled:opacity-60"
           >
             {pending ? "Sending…" : "Send to the couple"}
           </button>
@@ -276,8 +287,8 @@ function Choice({
       onClick={onClick}
       className={`flex-1 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
         active
-          ? "border-[#a5865a] bg-[#efe4cc] text-[#4a4034]"
-          : "border-[#d8c6a0] text-[#8a7b60] hover:text-[#4a4034]"
+          ? "border-[#9166cc] bg-[#f0e9fb] text-[#4a2e7a]"
+          : "border-[#e2d8f2] text-[#726a92] hover:text-[#4a2e7a]"
       }`}
     >
       {label}
