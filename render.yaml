@@ -1,0 +1,15 @@
+# Render Blueprint. When you point Render at this repo it reads this file
+# and creates the service automatically.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: proposal-site
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      # DATABASE_URL is a secret, so it is NOT stored here.
+      # Render will ask you to paste it in the dashboard on first deploy.
+      - key: DATABASE_URL
+        sync: false
