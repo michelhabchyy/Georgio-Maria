@@ -31,6 +31,12 @@ export default function Invite() {
           >
             <span className="env-body" />
             <span className="env-pocket" />
+            <span className="env-front">
+              <span className="env-title">{party.envelopeText}</span>
+              {party.envelopeSubtext && (
+                <span className="env-subtitle">{party.envelopeSubtext}</span>
+              )}
+            </span>
             <span className="env-flap" />
             <span className="env-seal">{party.sealInitials}</span>
           </button>
