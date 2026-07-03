@@ -26,20 +26,24 @@ export const party = {
   // The big reminder that it's a secret.
   secretNote: "It's a surprise — please don't say a word to Maria!",
 
-  // Who's hosting (shown at the bottom). Leave "" to hide.
-  host: "Georgio",
+  // Initials on the wax seal of the envelope.
+  sealInitials: "G & M",
+
+  // Signature at the bottom of the invitation. Leave "" to hide.
+  signature: "With love, Georgio & Maria",
 
   // RSVP form options.
   rsvp: {
-    prompt: "Can you make it?",
+    prompt: "Will you join us?",
+    intro: "Add your name and a message to confirm you'll be there.",
     // Let guests say how many people are coming with them.
-    askGuestCount: true,
+    askGuestCount: false,
     // Let guests leave a short note.
     askMessage: true,
-    messageLabel: "Anything to add? (optional)",
+    messageLabel: "A message for the couple",
     // Shown after they RSVP yes.
-    thanksYes: "You're on the list. See you there! 🎉",
+    thanksYes: "Your seat is saved. See you there! 🎉",
     // Shown after they RSVP no.
-    thanksNo: "We'll miss you — thanks for letting us know. 💛",
+    thanksNo: "We'll miss you — thank you for letting us know. 💛",
   },
 } as const;
