@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { rsvp, type RsvpResult } from "./actions";
 import { party } from "@/lib/config";
+import RingGraphic from "./ring";
 
 // Two acts:
 //   1. a sealed envelope, centered — click to open
@@ -64,12 +65,14 @@ export default function Invite() {
 // The invitation itself — a sheet of cream paper.
 function Letter() {
   return (
-    <section className="rounded-[20px] border border-[#d8c6a0] bg-[#f8f2e4] px-7 py-12 text-center shadow-[0_30px_60px_-30px_rgba(90,68,34,0.5)] sm:px-12">
-      <p className="text-xs uppercase tracking-[0.35em] text-[#a5865a]">
+    <section className="lux-card overflow-hidden rounded-[24px] px-7 py-12 text-center sm:px-12">
+      <RingGraphic className="mx-auto -mt-2 mb-2 h-32 w-32 sm:h-40 sm:w-40" />
+
+      <p className="text-xs uppercase tracking-[0.4em] text-[#a5865a]">
         {party.eyebrow}
       </p>
 
-      <h1 className="mt-6 font-serif text-4xl leading-tight text-[#4a4034] sm:text-5xl">
+      <h1 className="mt-5 font-serif text-4xl leading-tight text-[#4a4034] sm:text-5xl">
         {party.title}
       </h1>
       {party.subtitle && (
@@ -80,7 +83,7 @@ function Letter() {
 
       <Ornament />
 
-      <dl className="flex flex-col gap-5">
+      <dl className="flex flex-col gap-6">
         <Detail label="When" value={[party.date, party.time]} />
         <Detail label="Where" value={[party.location, party.address]} />
         <Detail label="Dress" value={[party.dressCode]} />
@@ -123,10 +126,10 @@ function Detail({ label, value }: { label: string; value: string[] }) {
 
 function Ornament() {
   return (
-    <div className="my-8 flex items-center justify-center gap-3 text-[#c2a877]">
-      <span className="h-px w-14 bg-[#d8c6a0]" />
+    <div className="my-9 flex items-center justify-center gap-4 text-[#c2a877]">
+      <span className="gold-rule w-16" />
       <span className="text-lg">❦</span>
-      <span className="h-px w-14 bg-[#d8c6a0]" />
+      <span className="gold-rule w-16" />
     </div>
   );
 }
@@ -159,7 +162,7 @@ function RsvpSection() {
   return (
     <section
       ref={sectionRef}
-      className="mt-12 rounded-[20px] border border-[#d8c6a0] bg-[#f8f2e4] px-7 py-10 shadow-[0_30px_60px_-30px_rgba(90,68,34,0.5)] sm:px-12"
+      className="lux-card mt-12 rounded-[24px] px-7 py-10 sm:px-12"
     >
       {state?.ok ? (
         <div className="flex flex-col items-center gap-4 text-center">
@@ -219,7 +222,7 @@ function RsvpSection() {
           <button
             type="submit"
             disabled={pending}
-            className="rounded-full bg-[#a5865a] px-8 py-3 font-medium text-[#fdf8ee] shadow-lg shadow-[#a5865a]/30 transition-transform hover:scale-[1.02] hover:bg-[#94764c] disabled:opacity-60"
+            className="mt-1 rounded-full bg-gradient-to-b from-[#c2a06e] to-[#9a7a4b] px-8 py-3.5 font-medium tracking-wide text-[#fdf8ee] shadow-[0_12px_24px_-8px_rgba(120,90,45,0.6),inset_0_1px_0_rgba(255,255,255,0.35)] transition-transform hover:scale-[1.02] hover:from-[#cba97a] hover:to-[#a5865a] disabled:opacity-60"
           >
             {pending ? "Sending…" : "Send to the couple"}
           </button>

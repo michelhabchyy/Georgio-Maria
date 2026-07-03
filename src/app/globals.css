@@ -15,8 +15,11 @@
 
 body {
   background:
-    radial-gradient(90% 60% at 50% 0%, #f3ead6 0%, transparent 60%),
-    var(--background);
+    radial-gradient(120% 80% at 50% -10%, #f7f0df 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 10%, #efe0c4 0%, transparent 50%),
+    radial-gradient(80% 80% at 0% 100%, #e5d6bb 0%, transparent 55%),
+    linear-gradient(160deg, #efe6d3 0%, #e6dac0 100%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
@@ -42,9 +45,10 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 10px;
-  background: linear-gradient(155deg, #e9dabd 0%, #dbc6a1 100%);
-  box-shadow: 0 26px 50px -20px rgba(90, 68, 34, 0.55),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  background: linear-gradient(155deg, #efe0c3 0%, #e0cba4 55%, #d3bd96 100%);
+  box-shadow: 0 30px 55px -20px rgba(90, 68, 34, 0.55),
+    inset 0 0 0 1px rgba(184, 151, 95, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   z-index: 1;
 }
 
@@ -135,4 +139,67 @@ body {
 }
 .animate-softpulse {
   animation: softpulse 2.2s ease-in-out infinite;
+}
+
+/* Ring graphic motion */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.animate-floaty {
+  animation: floaty 4.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.sparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 2.6s ease-in-out infinite;
+}
+
+/* Luxurious card: subtle gradient sheet with a gold hairline */
+.lux-card {
+  background: linear-gradient(165deg, #faf5e9 0%, #f2e8d3 60%, #ede0c6 100%);
+  border: 1px solid rgba(184, 151, 95, 0.35);
+  box-shadow: 0 40px 70px -35px rgba(90, 68, 34, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Thin gold divider gradient */
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(184, 151, 95, 0.7),
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-floaty,
+  .sparkle,
+  .animate-softpulse {
+    animation: none;
+  }
+  .sparkle {
+    opacity: 0.9;
+  }
 }
