@@ -85,7 +85,11 @@ function Letter() {
 
       <dl className="flex flex-col gap-6">
         <Detail label="When" value={[party.date, party.time]} />
-        <Detail label="Where" value={[party.location, party.address]} />
+        <Detail
+          label="Where"
+          value={[party.location, party.address]}
+          href={party.mapUrl}
+        />
         <Detail label="Dress" value={[party.dressCode]} />
       </dl>
 
@@ -105,7 +109,16 @@ function Letter() {
 }
 
 // One "When / Where / Dress" row; hidden entirely if it has no values.
-function Detail({ label, value }: { label: string; value: string[] }) {
+// Pass `href` to add a Google Maps link beneath the values.
+function Detail({
+  label,
+  value,
+  href,
+}: {
+  label: string;
+  value: string[];
+  href?: string;
+}) {
   const parts = value.filter(Boolean);
   if (parts.length === 0) return null;
   return (
@@ -120,6 +133,16 @@ function Detail({ label, value }: { label: string; value: string[] }) {
           </span>
         ))}
       </dd>
+      {href && (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#d8c6a0] bg-[#fffdf7]/60 px-3.5 py-1.5 text-xs font-medium tracking-wide text-[#8a6f45] transition-colors hover:border-[#a5865a] hover:text-[#4a4034]"
+        >
+          <span aria-hidden>📍</span> View on Google Maps
+        </a>
+      )}
     </div>
   );
 }
