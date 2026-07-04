@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Great_Vibes } from "next/font/google";
+import { Geist, Cormorant_Garamond, Great_Vibes } from "next/font/google";
 import "./globals.css";
 
+// Small sans for labels / UI text.
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Editorial display serif for headings and body — the luxury voice.
+const cormorant = Cormorant_Garamond({
+  variable: "--font-display",
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
 });
 
-// Elegant calligraphy script for the lettering on the envelope.
+// Elegant calligraphy script for accents and the envelope lettering.
 const greatVibes = Great_Vibes({
   variable: "--font-script",
   weight: "400",
@@ -32,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${greatVibes.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${cormorant.variable} ${greatVibes.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

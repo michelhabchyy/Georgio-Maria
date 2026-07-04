@@ -59,7 +59,7 @@ export default function RingGraphic({
           rx="45"
           ry="45"
           stroke="url(#ringBand)"
-          strokeWidth="12"
+          strokeWidth="9"
         />
         {/* band top highlight */}
         <path
@@ -84,8 +84,8 @@ export default function RingGraphic({
           {/* facet edges */}
           <g
             stroke="#b9975f"
-            strokeOpacity="0.65"
-            strokeWidth="1"
+            strokeOpacity="0.5"
+            strokeWidth="0.8"
             strokeLinejoin="round"
           >
             <path d="M78 40 L122 40 L138 58 L100 106 L62 58 Z" />
@@ -117,13 +117,7 @@ export default function RingGraphic({
           className="sparkle"
           style={{ animationDelay: "1.5s" }}
           d={STAR}
-          transform="translate(150 78) scale(0.55)"
-        />
-        <path
-          className="sparkle"
-          style={{ animationDelay: "2.1s" }}
-          d={STAR}
-          transform="translate(58 74) scale(0.5)"
+          transform="translate(150 78) scale(0.5)"
         />
       </g>
     </svg>

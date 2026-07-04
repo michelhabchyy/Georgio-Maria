@@ -49,8 +49,8 @@ export const party = {
     askMessage: true,
     messageLabel: "A message for the couple",
     // Shown after they RSVP yes.
-    thanksYes: "Your seat is saved. See you there! 🎉",
+    thanksYes: "Your place is saved — we can't wait to celebrate with you.",
     // Shown after they RSVP no.
-    thanksNo: "We'll miss you, thank you for letting us know. 💛",
+    thanksNo: "You'll be dearly missed. Thank you for letting us know.",
   },
 } as const;

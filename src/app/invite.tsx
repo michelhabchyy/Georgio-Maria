@@ -5,115 +5,146 @@ import { rsvp, type RsvpResult } from "./actions";
 import { party } from "@/lib/config";
 import RingGraphic from "./ring";
 
-// Two acts:
-//   1. a sealed envelope, centered — click to open
-//   2. the opened invitation: details you scroll through, then the RSVP
+type Stage = "sealed" | "opening" | "pulling" | "revealed" | "done";
+
+// Two acts, joined by one continuous motion:
+//   1. a sealed envelope — click to open
+//   2. the flap lifts and the card is drawn up and out of the envelope,
+//      then dissolves into the full invitation you scroll through.
 export default function Invite() {
-  const [opening, setOpening] = useState(false);
-  const [opened, setOpened] = useState(false);
+  const [stage, setStage] = useState<Stage>("sealed");
 
   function open() {
-    if (opening) return;
-    setOpening(true);
-    // Let the flap finish lifting, then reveal the letter.
-    setTimeout(() => setOpened(true), 850);
+    if (stage !== "sealed") return;
+    setStage("opening"); // flap lifts
+    setTimeout(() => setStage("pulling"), 800); // card slides out
+    setTimeout(() => setStage("revealed"), 2200); // crossfade to invitation
+    setTimeout(() => setStage("done"), 3000); // remove the overlay
   }
 
-  if (!opened) {
-    return (
-      <div className="flex min-h-dvh flex-col items-center justify-center gap-10 p-8">
-        <div className="env-scene">
+  const isOpen = stage === "opening" || stage === "pulling" || stage === "revealed";
+  const isPulled = stage === "pulling" || stage === "revealed";
+
+  return (
+    <>
+      {stage !== "done" && (
+        <div className={`reveal-scene ${stage === "revealed" ? "is-fading" : ""}`}>
           <button
             type="button"
             onClick={open}
             aria-label="Open the invitation"
-            className={`envelope ${opening ? "is-open" : ""}`}
+            className="cursor-pointer border-0 bg-transparent p-0"
           >
-            <span className="env-body" />
-            <span className="env-pocket" />
-            <span className="env-front">
-              <span className="env-title">{party.envelopeText}</span>
-              {party.envelopeSubtext && (
-                <span className="env-subtitle">{party.envelopeSubtext}</span>
-              )}
-            </span>
-            <span className="env-flap" />
+            <div
+              className={`env-stage ${isOpen ? "is-open" : ""} ${
+                isPulled ? "is-pulled" : ""
+              }`}
+            >
+              <div className="env-back" />
+              <div className="pull-card">
+                <Cover />
+              </div>
+              <div className="env-front" />
+              <div className="env-flap" />
+            </div>
           </button>
-        </div>
-        <p
-          className={`text-sm uppercase tracking-[0.35em] text-[#9166cc] ${
-            opening ? "opacity-0" : "animate-softpulse"
-          } transition-opacity`}
-        >
-          Tap to open
-        </p>
-      </div>
-    );
-  }
 
+          <div
+            className={`flex flex-col items-center gap-3 transition-opacity duration-500 ${
+              stage === "sealed" ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <p className="font-script text-3xl leading-none text-[#5a4278]">
+              {party.envelopeText}
+            </p>
+            <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#a07a3f] animate-softpulse">
+              tap to open
+            </p>
+          </div>
+        </div>
+      )}
+
+      {(stage === "revealed" || stage === "done") && (
+        <div className="flex min-h-dvh flex-col items-center px-5 py-16 sm:py-24">
+          <div className="animate-rise w-full max-w-lg">
+            <Letter />
+            <ScrollHint />
+            <RsvpSection />
+            {party.signature && (
+              <p className="mt-16 text-center font-script text-2xl text-[#6b5385]">
+                {party.signature}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// The teaser printed on the card as it's drawn out — mirrors the top of the
+// invitation so the crossfade feels continuous.
+function Cover() {
   return (
-    <div className="flex min-h-dvh flex-col items-center px-5 py-14 sm:py-20">
-      <div className="animate-rise w-full max-w-lg">
-        <Letter />
-        <ScrollHint />
-        <RsvpSection />
-        {party.signature && (
-          <p className="mt-14 text-center font-serif text-lg italic text-[#7c5aa6]">
-            {party.signature}
-          </p>
-        )}
-      </div>
+    <div className="flex flex-col items-center px-6 text-center">
+      <RingGraphic className="h-16 w-16" />
+      <p className="mt-1 font-display text-lg font-medium leading-tight text-[#3a2b53]">
+        {party.title}
+      </p>
+      {party.subtitle && (
+        <p className="font-script text-lg text-[#6b5385]">{party.subtitle}</p>
+      )}
     </div>
   );
 }
 
-// The invitation itself — a sheet of cream paper.
+// The invitation itself.
 function Letter() {
   return (
-    <section className="lux-card overflow-hidden rounded-[24px] px-7 py-12 text-center sm:px-12">
-      <RingGraphic className="mx-auto -mt-2 mb-2 h-32 w-32 sm:h-40 sm:w-40" />
+    <section className="lux-card overflow-hidden rounded-[26px] px-7 py-14 text-center sm:px-14">
+      <RingGraphic className="mx-auto -mt-2 mb-3 h-28 w-28 sm:h-32 sm:w-32" />
 
-      <p className="text-xs uppercase tracking-[0.4em] text-[#9166cc]">
+      <p className="font-sans text-[11px] uppercase tracking-[0.5em] text-[#a07a3f]">
         {party.eyebrow}
       </p>
 
-      <h1 className="mt-5 font-serif text-4xl leading-tight text-[#4a2e7a] sm:text-5xl">
+      <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#3a2b53] sm:text-6xl">
         {party.title}
       </h1>
       {party.subtitle && (
-        <p className="mt-3 font-serif text-xl italic text-[#7c5aa6]">
+        <p className="mt-3 font-script text-3xl text-[#6b5385]">
           {party.subtitle}
         </p>
       )}
 
       <Ornament />
 
-      <dl className="flex flex-col gap-6">
-        <Detail label="" value={[party.date, party.time]} />
+      <dl className="flex flex-col gap-7">
+        <Detail label="When" value={[party.date, party.time]} />
         <Detail
-          label=""
+          label="Where"
           value={[party.location, party.address]}
           href={party.mapUrl}
         />
-        <Detail label="Dress" value={[party.dressCode]} />
+        <Detail label="Attire" value={[party.dressCode]} />
       </dl>
 
       {party.note && (
-        <p className="mx-auto mt-8 max-w-sm text-sm leading-relaxed text-[#726a92]">
+        <p className="mx-auto mt-10 max-w-sm font-display text-base leading-relaxed text-[#8c7ea0]">
           {party.note}
         </p>
       )}
 
       {party.secretNote && (
-        <p className="mx-auto mt-6 max-w-sm rounded-2xl border border-[#dcccf5] bg-[#f0e9fb] px-5 py-3 text-sm leading-relaxed text-[#5b447f]">
-          🤫 {party.secretNote}
+        <p className="mx-auto mt-10 max-w-xs border-t border-[#e3d7bf] pt-6 font-display text-base italic leading-relaxed text-[#6b5385]">
+          {party.secretNote}
         </p>
       )}
     </section>
   );
 }
 
-// One "When / Where / Dress" row; hidden entirely if it has no values.
+// One detail row; hidden entirely if it has no values.
 // Pass `href` to add a Google Maps link beneath the values.
 function Detail({
   label,
@@ -128,12 +159,12 @@ function Detail({
   if (parts.length === 0) return null;
   return (
     <div>
-      <dt className="text-xs uppercase tracking-[0.3em] text-[#9166cc]">
+      <dt className="font-sans text-[10px] uppercase tracking-[0.4em] text-[#a07a3f]">
         {label}
       </dt>
-      <dd className="mt-1 font-serif text-lg text-[#4a2e7a]">
+      <dd className="mt-1.5 font-display text-2xl text-[#3a2b53]">
         {parts.map((p, i) => (
-          <span key={i} className="block">
+          <span key={i} className="block leading-snug">
             {p}
           </span>
         ))}
@@ -143,9 +174,9 @@ function Detail({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#e2d8f2] bg-[#ffffff]/60 px-3.5 py-1.5 text-xs font-medium tracking-wide text-[#7c5aa6] transition-colors hover:border-[#9166cc] hover:text-[#4a2e7a]"
+          className="mt-3 inline-block border-b border-[#d8c9a8] pb-0.5 font-sans text-[11px] uppercase tracking-[0.25em] text-[#a07a3f] transition-colors hover:border-[#b0894f] hover:text-[#3a2b53]"
         >
-          <span aria-hidden>📍</span> View on Google Maps
+          View on map
         </a>
       )}
     </div>
@@ -154,26 +185,26 @@ function Detail({
 
 function Ornament() {
   return (
-    <div className="my-9 flex items-center justify-center gap-4 text-[#a98fd0]">
-      <span className="gold-rule w-16" />
-      <span className="text-lg">❦</span>
-      <span className="gold-rule w-16" />
+    <div className="my-10 flex items-center justify-center gap-4">
+      <span className="gold-rule w-20" />
+      <span className="text-[0.6rem] text-[#b0894f]">◆</span>
+      <span className="gold-rule w-20" />
     </div>
   );
 }
 
 function ScrollHint() {
   return (
-    <div className="animate-softpulse mt-8 flex flex-col items-center gap-1 text-[#9166cc]">
-      <span className="text-xs uppercase tracking-[0.3em]">Scroll to RSVP</span>
-      <span aria-hidden className="text-lg">
-        ↓
+    <div className="mt-10 flex flex-col items-center gap-2.5">
+      <span className="font-sans text-[10px] uppercase tracking-[0.45em] text-[#a07a3f]">
+        Scroll
       </span>
+      <span className="animate-softpulse h-9 w-px bg-gradient-to-b from-[#b0894f] to-transparent" />
     </div>
   );
 }
 
-// Name + message, submitted to the couple.
+// Name + message + optional +1, submitted to the couple.
 function RsvpSection() {
   const [attending, setAttending] = useState<"yes" | "no">("yes");
   const [state, formAction, pending] = useActionState<
@@ -182,7 +213,6 @@ function RsvpSection() {
   >(rsvp, null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // When the RSVP is recorded, bring the confirmation into view.
   useEffect(() => {
     if (state?.ok) sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [state]);
@@ -190,16 +220,17 @@ function RsvpSection() {
   return (
     <section
       ref={sectionRef}
-      className="lux-card mt-12 rounded-[24px] px-7 py-10 sm:px-12"
+      className="lux-card mt-14 rounded-[26px] px-7 py-12 sm:px-14"
     >
       {state?.ok ? (
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="text-5xl">{state.attending ? "🎉" : "💛"}</div>
-          <p className="max-w-sm font-serif text-xl text-[#4a2e7a]">
+        <div className="flex flex-col items-center gap-5 text-center">
+          {state.attending && <RingGraphic className="h-20 w-20" />}
+          <p className="font-script text-3xl text-[#6b5385]">Thank you</p>
+          <p className="max-w-sm font-display text-xl leading-relaxed text-[#3a2b53]">
             {state.attending ? party.rsvp.thanksYes : party.rsvp.thanksNo}
           </p>
           {!state.saved && (
-            <p className="text-xs text-[#9a8fc0]">
+            <p className="font-sans text-xs text-[#a99cbd]">
               (Shown here only — connect the database to keep RSVPs.)
             </p>
           )}
@@ -207,17 +238,19 @@ function RsvpSection() {
       ) : (
         <form action={formAction} className="flex flex-col gap-5">
           <div className="text-center">
-            <h2 className="font-serif text-2xl text-[#4a2e7a]">
+            <h2 className="font-display text-3xl font-medium text-[#3a2b53]">
               {party.rsvp.prompt}
             </h2>
-            <p className="mt-2 text-sm text-[#726a92]">{party.rsvp.intro}</p>
+            <p className="mt-2 font-display text-base text-[#8c7ea0]">
+              {party.rsvp.intro}
+            </p>
           </div>
 
           <input
             name="name"
             required
             placeholder="Your name"
-            className="w-full rounded-xl border border-[#e2d8f2] bg-[#ffffff] px-4 py-3 text-[#4a2e7a] placeholder:text-[#b3a6d0] focus:border-[#9166cc] focus:outline-none"
+            className="w-full rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-lg text-[#3a2b53] placeholder:text-[#b8aac4] focus:border-[#b0894f] focus:outline-none"
           />
 
           <input type="hidden" name="attending" value={attending} />
@@ -225,22 +258,22 @@ function RsvpSection() {
             <Choice
               active={attending === "yes"}
               onClick={() => setAttending("yes")}
-              label="I'll be there"
+              label="Joyfully accepts"
             />
             <Choice
               active={attending === "no"}
               onClick={() => setAttending("no")}
-              label="Can't make it"
+              label="Regretfully declines"
             />
           </div>
 
           {party.rsvp.askPlusOne && attending === "yes" && (
-            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e2d8f2] bg-[#faf7ff] px-4 py-3 text-sm text-[#4a2e7a] transition-colors hover:border-[#8b5fbf]">
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-base text-[#3a2b53] transition-colors hover:border-[#b0894f]">
               <input
                 type="checkbox"
                 name="guests"
                 value="1"
-                className="h-5 w-5 accent-[#7a4bb8]"
+                className="h-5 w-5 accent-[#b0894f]"
               />
               {party.rsvp.plusOneLabel}
             </label>
@@ -251,18 +284,18 @@ function RsvpSection() {
               name="message"
               rows={4}
               placeholder={party.rsvp.messageLabel}
-              className="w-full rounded-xl border border-[#e2d8f2] bg-[#ffffff] px-4 py-3 text-[#4a2e7a] placeholder:text-[#b3a6d0] focus:border-[#9166cc] focus:outline-none"
+              className="w-full rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-lg text-[#3a2b53] placeholder:text-[#b8aac4] focus:border-[#b0894f] focus:outline-none"
             />
           )}
 
           {state?.error && (
-            <p className="text-sm text-[#b0553f]">{state.error}</p>
+            <p className="font-sans text-sm text-[#b0553f]">{state.error}</p>
           )}
 
           <button
             type="submit"
             disabled={pending}
-            className="mt-1 rounded-full bg-gradient-to-b from-[#8f63c9] to-[#6b3fa8] px-8 py-3.5 font-medium tracking-wide text-white shadow-[0_12px_24px_-8px_rgba(74,44,110,0.55),inset_0_1px_0_rgba(255,255,255,0.3)] transition-transform hover:scale-[1.02] hover:from-[#9b74d3] hover:to-[#7a4bb8] disabled:opacity-60"
+            className="mt-2 rounded-full bg-gradient-to-b from-[#d8bd84] to-[#b3894c] px-8 py-4 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-[#3a2b53] shadow-[0_14px_28px_-10px_rgba(120,90,40,0.6),inset_0_1px_0_rgba(255,255,255,0.5)] transition-transform hover:scale-[1.015] hover:from-[#e2c890] hover:to-[#bd935a] disabled:opacity-60"
           >
             {pending ? "Sending…" : "Send to the couple"}
           </button>
@@ -285,10 +318,10 @@ function Choice({
     <button
       type="button"
       onClick={onClick}
-      className={`flex-1 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
+      className={`flex-1 rounded-xl border px-4 py-3 font-sans text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
         active
-          ? "border-[#9166cc] bg-[#f0e9fb] text-[#4a2e7a]"
-          : "border-[#e2d8f2] text-[#726a92] hover:text-[#4a2e7a]"
+          ? "border-[#3a2b53] bg-[#3a2b53] text-[#f7f0e4]"
+          : "border-[#e3d7bf] text-[#8c7ea0] hover:text-[#3a2b53]"
       }`}
     >
       {label}
