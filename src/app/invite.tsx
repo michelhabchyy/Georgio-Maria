@@ -120,9 +120,9 @@ function Letter() {
       <Ornament />
 
       <dl className="flex flex-col gap-7">
-        <Detail label="When" value={[party.date, party.time]} />
+        <Detail label="" value={[party.date, party.time]} />
         <Detail
-          label="Where"
+          label=""
           value={[party.location, party.address]}
           href={party.mapUrl}
         />
