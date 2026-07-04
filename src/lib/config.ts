@@ -39,16 +39,6 @@ export const party = {
   // Small line under it — set to "" to hide.
   envelopeSubtext: "",
 
-  // Cinematic envelope intro (like theyesmakers.com).
-  //   1. Drop a pre-rendered envelope-opening video into the /public folder.
-  //   2. Set `video` to its path, e.g. "/envelope.mp4".
-  // Leave `video` as "" to use the built-in animated (CSS) envelope instead.
-  intro: {
-    video: "", // e.g. "/envelope.mp4"
-    poster: "", // optional first-frame image, e.g. "/envelope-poster.jpg"
-    oncePerSession: true, // only play the intro once per browser session
-  },
-
   // Signature at the bottom of the invitation. Leave "" to hide.
   signature: "With love, Georgio & Maria",
 

@@ -5,27 +5,59 @@ import { rsvp, type RsvpResult } from "./actions";
 import { party } from "@/lib/config";
 import RingGraphic from "./ring";
 
-type Stage = "sealed" | "opening" | "pulling" | "revealed" | "done";
-
-// The envelope opens (a pre-rendered video if one is configured, otherwise the
-// built-in CSS envelope), then the full invitation is revealed underneath.
+// The user clicks the envelope and the invitation is shown — no animation.
 export default function Invite() {
   const [revealed, setRevealed] = useState(false);
-  const reveal = () => setRevealed(true);
+
+  if (revealed) return <Invitation />;
+  return <SealedEnvelope onOpen={() => setRevealed(true)} />;
+}
+
+// The sealed envelope. A gentle fade on click, then the invitation appears.
+function SealedEnvelope({ onOpen }: { onOpen: () => void }) {
+  const [fading, setFading] = useState(false);
+
+  function open() {
+    if (fading) return;
+    setFading(true);
+    setTimeout(onOpen, 450);
+  }
 
   return (
-    <>
-      {party.intro.video ? (
-        <VideoIntro onReveal={reveal} />
-      ) : (
-        <CssIntro onReveal={reveal} />
-      )}
-      {revealed && <Invitation />}
-    </>
+    <div className={`reveal-scene ${fading ? "is-fading" : ""}`}>
+      <button
+        type="button"
+        onClick={open}
+        aria-label="Open the invitation"
+        className="cursor-pointer border-0 bg-transparent p-0 transition-transform hover:scale-[1.02]"
+      >
+        <div className="env-stage">
+          <div className="env-back" />
+          <div className="flap flap-left" />
+          <div className="flap flap-right" />
+          <div className="flap flap-bottom" />
+          <div className="env-names">
+            <span className="n">{party.coupleOne}</span>
+            <span className="andw">and</span>
+            <span className="n">{party.coupleTwo}</span>
+          </div>
+          <div className="flap flap-top" />
+        </div>
+      </button>
+
+      <div className="flex flex-col items-center gap-3">
+        <p className="font-script text-3xl leading-none text-[#8a6fb8]">
+          {party.envelopeText}
+        </p>
+        <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] animate-softpulse">
+          tap to open
+        </p>
+      </div>
+    </div>
   );
 }
 
-// The full invitation shown after the envelope opens.
+// The full invitation shown after the envelope is clicked.
 function Invitation() {
   return (
     <div className="flex min-h-dvh flex-col items-center px-5 py-16 sm:py-24">
@@ -39,170 +71,6 @@ function Invitation() {
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-// ── Video intro ───────────────────────────────────────────────────────────
-// Full-screen overlay → tap to open → play the envelope video → fade away to
-// reveal the invitation. Same technique as the reference site.
-function VideoIntro({ onReveal }: { onReveal: () => void }) {
-  const [started, setStarted] = useState(false);
-  const [fading, setFading] = useState(false);
-  const [gone, setGone] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const finishedRef = useRef(false);
-
-  // Skip the intro entirely if it already played this session.
-  useEffect(() => {
-    if (party.intro.oncePerSession && sessionStorage.getItem("introSeen")) {
-      onReveal();
-      setGone(true);
-    }
-  }, [onReveal]);
-
-  function start() {
-    if (started) return;
-    setStarted(true);
-    const v = videoRef.current;
-    if (!v) return finish();
-    v.play().catch(() => finish());
-  }
-
-  function finish() {
-    if (finishedRef.current) return;
-    finishedRef.current = true;
-    if (party.intro.oncePerSession) {
-      try {
-        sessionStorage.setItem("introSeen", "1");
-      } catch {}
-    }
-    onReveal(); // mount the invitation underneath
-    setFading(true); // fade the overlay away
-    setTimeout(() => setGone(true), 700);
-  }
-
-  if (gone) return null;
-
-  return (
-    <div
-      className={`intro-overlay ${fading ? "is-fading" : ""}`}
-      onClick={start}
-      role="button"
-      tabIndex={0}
-      aria-label="Open the invitation"
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") start();
-      }}
-    >
-      <video
-        ref={videoRef}
-        className="intro-video"
-        src={party.intro.video}
-        poster={party.intro.poster || undefined}
-        preload="auto"
-        playsInline
-        onEnded={finish}
-        onError={finish}
-        onTimeUpdate={(e) => {
-          const v = e.currentTarget;
-          if (v.duration && v.duration - v.currentTime <= 0.4) finish();
-        }}
-      />
-      {!started && (
-        <div className="intro-tap">
-          <p className="font-script text-4xl leading-none text-[#5a4278]">
-            {party.envelopeText}
-          </p>
-          <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#8a6fb8] animate-softpulse">
-            tap to open
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── CSS envelope fallback ─────────────────────────────────────────────────
-// The built-in four-flap envelope; used when no intro video is configured.
-function CssIntro({ onReveal }: { onReveal: () => void }) {
-  const [stage, setStage] = useState<Stage>("sealed");
-
-  function open() {
-    if (stage !== "sealed") return;
-    setStage("opening"); // flap lifts
-    setTimeout(() => setStage("pulling"), 800); // letter slides out
-    setTimeout(() => {
-      setStage("revealed"); // crossfade to invitation
-      onReveal();
-    }, 2200);
-    setTimeout(() => setStage("done"), 3000); // remove the overlay
-  }
-
-  if (stage === "done") return null;
-
-  const isOpen = stage === "opening" || stage === "pulling" || stage === "revealed";
-  const isPulled = stage === "pulling" || stage === "revealed";
-
-  return (
-    <div className={`reveal-scene ${stage === "revealed" ? "is-fading" : ""}`}>
-      <button
-        type="button"
-        onClick={open}
-        aria-label="Open the invitation"
-        className="cursor-pointer border-0 bg-transparent p-0"
-      >
-        <div
-          className={`env-stage ${isOpen ? "is-open" : ""} ${
-            isPulled ? "is-pulled" : ""
-          }`}
-        >
-          <div className="env-back" />
-          <div className="pull-card">
-            <Cover />
-          </div>
-          <div className="flap flap-left" />
-          <div className="flap flap-right" />
-          <div className="flap flap-bottom" />
-          <div className="env-names">
-            <span className="n">{party.coupleOne}</span>
-            <span className="andw">and</span>
-            <span className="n">{party.coupleTwo}</span>
-          </div>
-          <div className="flap flap-top" />
-        </div>
-      </button>
-
-      <div
-        className={`flex flex-col items-center gap-3 transition-opacity duration-500 ${
-          stage === "sealed" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <p className="font-script text-3xl leading-none text-[#8a6fb8]">
-          {party.envelopeText}
-        </p>
-        <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] animate-softpulse">
-          tap to open
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// The teaser printed on the letter as it's drawn out — mirrors the top of the
-// invitation so the crossfade feels continuous.
-function Cover() {
-  return (
-    <div className="flex flex-col items-center px-4 text-center">
-      <RingGraphic className="h-11 w-11" />
-      <p className="mt-1 font-display text-sm font-semibold leading-tight text-[#3a2b53]">
-        {party.title}
-      </p>
-      {party.subtitle && (
-        <p className="font-script text-base leading-tight text-[#6b5385]">
-          {party.subtitle}
-        </p>
-      )}
     </div>
   );
 }
