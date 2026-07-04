@@ -45,7 +45,7 @@ export const party = {
   // RSVP form options.
   rsvp: {
     prompt: "Will you join us?",
-    intro: "Add your name and a message to confirm you'll be there.",
+    intro: "Kindly confirm your name and presence before 6 of August.",
     // Show a "+1" checkbox so guests can bring one extra person.
     askPlusOne: true,
     plusOneLabel: "I'm bringing a partner along.",
