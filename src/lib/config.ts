@@ -30,10 +30,24 @@ export const party = {
   // The big reminder that it's a secret.
   secretNote: "Our little secret, until the right moment!",
 
-  // Lettering on the front of the closed envelope (elegant script).
+  // The couple's names, in white script on the front of the envelope.
+  coupleOne: "Georgio",
+  coupleTwo: "Maria",
+
+  // Small script line shown over the intro (the teaser hint).
   envelopeText: "Can you keep a secret?",
   // Small line under it — set to "" to hide.
   envelopeSubtext: "",
+
+  // Cinematic envelope intro (like theyesmakers.com).
+  //   1. Drop a pre-rendered envelope-opening video into the /public folder.
+  //   2. Set `video` to its path, e.g. "/envelope.mp4".
+  // Leave `video` as "" to use the built-in animated (CSS) envelope instead.
+  intro: {
+    video: "", // e.g. "/envelope.mp4"
+    poster: "", // optional first-frame image, e.g. "/envelope-poster.jpg"
+    oncePerSession: true, // only play the intro once per browser session
+  },
 
   // Signature at the bottom of the invitation. Leave "" to hide.
   signature: "With love, Georgio & Maria",

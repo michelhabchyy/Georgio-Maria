@@ -68,102 +68,166 @@ body {
   transform-style: preserve-3d;
 }
 
-/* Envelope back (the rectangle the card sits against) */
+/*
+  A real envelope built from four flaps that tile the rectangle exactly —
+  top, bottom, left, right — all meeting at the centre. Because they cover the
+  whole area with no gaps, the letter simply sits BEHIND them and slides up out
+  of the top, just like the real thing.
+*/
+
+/* Envelope back wall (the surface the letter rests against) */
 .env-back {
   position: absolute;
   inset: 0;
-  border-radius: 12px;
-  background: linear-gradient(158deg, #f7f1e6 0%, #efe6d5 100%);
-  box-shadow: 0 40px 70px -28px rgba(60, 44, 30, 0.5),
-    inset 0 0 0 1px rgba(176, 137, 79, 0.35);
+  border-radius: 8px;
+  background: linear-gradient(160deg, #b7a0e2 0%, #a184d2 100%);
   z-index: 1;
 }
 
-/* The card that gets pulled out */
+/* The letter, tucked inside; slides straight up on open */
 .pull-card {
   position: absolute;
-  inset: 16px 20px;
-  border-radius: 10px;
-  background: linear-gradient(160deg, #fffdf9 0%, #f7f0e4 100%);
-  box-shadow: 0 18px 30px -18px rgba(60, 44, 30, 0.45),
-    inset 0 0 0 1px rgba(176, 137, 79, 0.3);
+  left: 28px;
+  right: 28px;
+  top: 18px;
+  height: 202px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #ffffff 0%, #f6f1fb 100%);
+  box-shadow: 0 2px 8px rgba(96, 72, 148, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
-  transform: translateY(0) scale(1);
-  transition: transform 1.35s cubic-bezier(0.22, 0.8, 0.24, 1),
-    box-shadow 1.35s ease;
+  transform: translateY(0);
+  transition: transform 1.4s cubic-bezier(0.22, 0.8, 0.24, 1),
+    box-shadow 1.4s ease;
 }
 .env-stage.is-pulled .pull-card {
-  transform: translateY(-236px) scale(1.04);
-  box-shadow: 0 44px 60px -24px rgba(60, 44, 30, 0.5),
-    inset 0 0 0 1px rgba(176, 137, 79, 0.35);
+  transform: translateY(-206px);
+  box-shadow: 0 40px 60px -24px rgba(96, 72, 148, 0.5);
 }
 
-/* Envelope front pocket — hides the lower part of the card (the "tuck") */
-.env-front {
+/* The four flaps. All share this base; each gets its own clip + shade. */
+.flap {
   position: absolute;
   inset: 0;
-  border-radius: 0 0 12px 12px;
-  background: linear-gradient(158deg, #f4ecdd 0%, #e8dcc6 100%);
-  /* pocket: full bottom, sides up to 30%, dipping to a point at center */
-  clip-path: polygon(0% 100%, 0% 30%, 50% 58%, 100% 30%, 100% 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.flap-left {
+  clip-path: polygon(0 0, 0 100%, 50% 50%);
+  background: linear-gradient(90deg, #a88ed8, #b49ce0);
   z-index: 3;
 }
-/* faint seam lines on the front flaps */
-.env-front::after {
+.flap-right {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+  background: linear-gradient(270deg, #a88ed8, #b49ce0);
+  z-index: 3;
+}
+.flap-bottom {
+  clip-path: polygon(0 100%, 100% 100%, 50% 50%);
+  background: linear-gradient(0deg, #a184d2, #b39cdf);
+  border-radius: 0 0 8px 8px;
+  z-index: 4;
+}
+/* subtle seam where the flaps fold to the centre */
+.flap-bottom::after {
   content: "";
   position: absolute;
   inset: 0;
   clip-path: inherit;
   background: linear-gradient(
-        to bottom right,
+        to top right,
         transparent calc(50% - 0.5px),
-        rgba(176, 137, 79, 0.22) 50%,
+        rgba(255, 255, 255, 0.22) 50%,
         transparent calc(50% + 0.5px)
       )
       left / 50% 100% no-repeat,
     linear-gradient(
-        to bottom left,
+        to top left,
         transparent calc(50% - 0.5px),
-        rgba(176, 137, 79, 0.22) 50%,
+        rgba(255, 255, 255, 0.22) 50%,
         transparent calc(50% + 0.5px)
       )
       right / 50% 100% no-repeat;
 }
 
-/* Top flap */
-.env-flap {
+/* the couple's names in white script on the front */
+.env-names {
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  height: 58%;
-  background: linear-gradient(160deg, #f2e9d8 0%, #e6d9c1 100%);
+  top: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.86;
+  color: #ffffff;
+  z-index: 5;
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(80, 54, 130, 0.35);
+}
+.env-names .n {
+  font-family: var(--font-script), "Segoe Script", cursive;
+  font-size: 34px;
+}
+.env-names .andw {
+  font-family: var(--font-script), "Segoe Script", cursive;
+  font-size: 17px;
+  opacity: 0.92;
+}
+
+/* Top flap — opens up and back on a hinge at the top edge */
+.flap-top {
   clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, #c6b4ea, #b39cdf);
+  border-radius: 8px 8px 0 0;
   transform-origin: top center;
-  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.5s ease 0.5s;
-  filter: drop-shadow(0 6px 5px rgba(60, 44, 30, 0.28));
-  z-index: 4;
+  transition: transform 0.9s cubic-bezier(0.5, 0, 0.2, 1),
+    opacity 0.4s ease 0.6s;
+  filter: drop-shadow(0 6px 6px rgba(96, 72, 148, 0.28));
+  backface-visibility: hidden;
+  z-index: 6;
 }
-.env-stage.is-open .env-flap {
+.env-stage.is-open .flap-top {
   transform: rotateX(-172deg);
+  z-index: 1;
 }
-.env-stage.is-pulled .env-flap {
+.env-stage.is-pulled .flap-top {
   opacity: 0;
 }
 
-/* Lettering on the closed card cover */
-.cover-script {
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 34px;
-  line-height: 1.1;
-  color: #5a4278;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 3px 8px rgba(46, 28, 74, 0.18);
+/* ── Video intro overlay ──────────────────────────────────────────────── */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #ffffff 0%, #f2ebfb 100%);
+  cursor: pointer;
+  transition: opacity 0.7s ease;
+}
+.intro-overlay.is-fading {
+  opacity: 0;
+  pointer-events: none;
+}
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.intro-tap {
+  position: absolute;
+  bottom: 11%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
 }
 
 /* ── Motion helpers ───────────────────────────────────────────────────── */
