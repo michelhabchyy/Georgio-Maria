@@ -49,7 +49,7 @@ export const party = {
       { icon: "heart", label: "The Celebration" },
     ],
     // Closing note under the timeline.
-    closing: "No charges. Only your presence is required.",
+    closing: "No charges - only your presence is required.",
   },
 
   // Signature at the bottom of the invitation. Leave "" to hide.
@@ -58,7 +58,7 @@ export const party = {
   // RSVP form options.
   rsvp: {
     prompt: "Will you join us?",
-    intro: "Kindly confirm your name and presence before 6 of August.",
+    intro: "Kindly confirm your name and presence before the 6th of August.",
     // Show a "+1" checkbox so guests can bring one extra person.
     askPlusOne: true,
     plusOneLabel: "I'm bringing a partner along.",
