@@ -39,6 +39,19 @@ export const party = {
   // Small line under it — set to "" to hide.
   envelopeSubtext: "",
 
+  // A visual "flow of the evening" timeline (no times — just the moments).
+  // Each step needs an `icon` (glass | dish | music | heart) and a `label`.
+  timeline: {
+    label: "The Evening",
+    steps: [
+      { icon: "glass", label: "Food & Drinks" },
+      { icon: "music", label: "Dancing" },
+      { icon: "heart", label: "The Celebration" },
+    ],
+    // Closing note under the timeline.
+    closing: "No gifts, please — only your presence is required.",
+  },
+
   // Signature at the bottom of the invitation. Leave "" to hide.
   signature: "With love, Georgio & Maria",
 

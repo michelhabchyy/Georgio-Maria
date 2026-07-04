@@ -47,6 +47,7 @@ function Invitation() {
     <div className="flex min-h-dvh flex-col items-center px-5 py-16 sm:py-24">
       <div className="animate-rise w-full max-w-lg">
         <Letter />
+        <EventFlow />
         <ScrollHint />
         <RsvpSection />
         {party.signature && (
@@ -154,6 +155,102 @@ function Ornament() {
       <span className="gold-rule w-20" />
     </div>
   );
+}
+
+// A horizontal timeline of the evening — nodes on a line, no times.
+function EventFlow() {
+  const t = party.timeline;
+  if (!t?.steps?.length) return null;
+  const inset = `${50 / t.steps.length}%`;
+
+  return (
+    <section className="lux-card mt-14 rounded-[26px] px-6 py-12 sm:px-14">
+      {t.label && (
+        <p className="text-center font-sans text-[11px] uppercase tracking-[0.4em] text-[#9494a8]">
+          {t.label}
+        </p>
+      )}
+
+      <div className="relative mt-9 flex items-start justify-between">
+        {/* the connecting line, running between the first and last node */}
+        <div
+          className="absolute top-7 h-px bg-gradient-to-r from-transparent via-[#c9c9d6] to-transparent"
+          style={{ left: inset, right: inset }}
+        />
+        {t.steps.map((step, i) => (
+          <div
+            key={i}
+            className="relative flex flex-1 flex-col items-center gap-3 px-1 text-center"
+          >
+            <div className="grid h-14 w-14 place-items-center rounded-full border border-[#dcdae6] bg-[#faf9fe] text-[#8b78b8] shadow-[0_6px_14px_-8px_rgba(90,80,130,0.5)]">
+              <StepIcon name={step.icon} />
+            </div>
+            <span className="font-display text-sm leading-tight text-[#6a58a0] sm:text-base">
+              {step.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {t.closing && (
+        <p className="mx-auto mt-10 max-w-sm border-t border-[#dcdae6] pt-6 text-center font-display text-base italic leading-relaxed text-[#8b78b8]">
+          {t.closing}
+        </p>
+      )}
+    </section>
+  );
+}
+
+// Simple line icons for the timeline nodes.
+function StepIcon({ name }: { name: string }) {
+  const p = {
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+  switch (name) {
+    case "glass":
+      return (
+        <svg {...p}>
+          <path d="M7 3h10l-1.2 7.2a4 4 0 0 1-7.6 0z" />
+          <path d="M12 13v6" />
+          <path d="M9 20h6" />
+        </svg>
+      );
+    case "dish":
+      return (
+        <svg {...p}>
+          <circle cx="12" cy="12" r="7.5" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      );
+    case "music":
+      return (
+        <svg {...p}>
+          <path d="M9 18V6l9-2v11" />
+          <circle cx="7" cy="18" r="2" />
+          <circle cx="16" cy="15" r="2" />
+        </svg>
+      );
+    case "heart":
+      return (
+        <svg {...p}>
+          <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />
+        </svg>
+      );
+    default:
+      return (
+        <svg {...p}>
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      );
+  }
 }
 
 function ScrollHint() {
