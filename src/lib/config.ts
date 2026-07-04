@@ -5,7 +5,7 @@
 
 export const party = {
   // Big script line shown at the top of the invitation.
-  eyebrow: "Shhh...",
+  eyebrow: "",
 
   // The big title of the invitation.
   title: "He's about to ask her forever!",
@@ -53,7 +53,7 @@ export const party = {
     askMessage: true,
     messageLabel: "A message for the couple",
     // Shown after they RSVP yes.
-    thanksYes: "Your place is saved — we can't wait to celebrate with you.",
+    thanksYes: "Your place is saved, we can't wait to celebrate with you.",
     // Shown after they RSVP no.
     thanksNo: "You'll be dearly missed. Thank you for letting us know.",
   },

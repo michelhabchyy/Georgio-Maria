@@ -50,9 +50,11 @@ function Invitation() {
         <ScrollHint />
         <RsvpSection />
         {party.signature && (
-          <p className="mt-16 text-center font-script text-2xl text-[#8b78b8]">
-            {party.signature}
-          </p>
+          <div className="mt-16 text-center font-script text-2xl leading-snug text-[#8b78b8]">
+            {party.signature.split(/,\s*/).map((line, i, arr) => (
+              <p key={i}>{i < arr.length - 1 ? `${line},` : line}</p>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -63,11 +65,13 @@ function Invitation() {
 function Letter() {
   return (
     <section className="lux-card overflow-hidden rounded-[26px] px-7 py-14 text-center sm:px-14">
-      <p className="font-script text-7xl leading-none text-[#33303d] sm:text-8xl">
-        {party.eyebrow}
-      </p>
+      {party.eyebrow && (
+        <p className="mb-6 font-script text-7xl leading-none text-[#33303d] sm:text-8xl">
+          {party.eyebrow}
+        </p>
+      )}
 
-      <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
+      <h1 className="font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
         {party.title}
       </h1>
       {party.subtitle && (
