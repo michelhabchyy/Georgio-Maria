@@ -11,7 +11,7 @@ export const party = {
   title: "He's about to ask her forever!",
 
   // Who / what it's for. Leave "" to hide.
-  subtitle: "to celebrate Maria",
+  subtitle: "Georgio & Maria",
 
   // The essentials. Any field left as "" is simply not shown.
   date: "Thursday August 13, 2026",
@@ -28,7 +28,7 @@ export const party = {
   note: "",
 
   // The big reminder that it's a secret.
-  secretNote: "It's a surprise, kindly no word to Maria!",
+  secretNote: "Our little secret, until the right moment!",
 
   // Lettering on the front of the closed envelope (elegant script).
   envelopeText: "Can you keep a secret?",
