@@ -5,7 +5,7 @@
 
 export const party = {
   // Small line above the title.
-  eyebrow: "You're Invited! SHHHH 🤫",
+  eyebrow: "SHHH...",
 
   // The big title of the invitation.
   title: "He's about to ask her forever!",

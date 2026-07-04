@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Ivory paper, deep aubergine ink, champagne gold */
-  --background: #ffffff;
-  --foreground: #2f2340;
+  /* Off-white paper, light-purple ink, silver accents */
+  --background: #f6f5f9;
+  --foreground: #5b4d8a;
 
-  --ink: #3a2b53;
-  --ink-soft: #6b5385;
-  --muted: #8c7ea0;
-  --gold: #b0894f;
-  --gold-soft: #c8a86b;
+  --ink: #6a58a0;
+  --ink-soft: #8b78b8;
+  --muted: #9f95bd;
+  --gold: #9494a8;
+  --gold-soft: #c9c9d6;
 }
 
 @theme inline {
@@ -22,10 +22,10 @@
 
 body {
   background:
-    radial-gradient(120% 80% at 50% -10%, #faf6ff 0%, transparent 55%),
-    radial-gradient(90% 70% at 100% 8%, #f6efe6 0%, transparent 50%),
-    radial-gradient(80% 80% at 0% 100%, #f4eefb 0%, transparent 55%),
-    linear-gradient(160deg, #ffffff 0%, #f8f4fc 100%);
+    radial-gradient(120% 80% at 50% -10%, #fbfaff 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 8%, #eeecf5 0%, transparent 50%),
+    radial-gradient(80% 80% at 0% 100%, #f2f0f9 0%, transparent 55%),
+    linear-gradient(160deg, #f8f7fb 0%, #ecebf3 100%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
@@ -118,7 +118,7 @@ body {
   line-height: 1.15;
   max-width: 280px;
   text-align: center;
-  color: #3a2b53;
+  color: #6a58a0;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
 }
 .env-flap {
@@ -199,21 +199,21 @@ body {
   animation: twinkle 3s ease-in-out infinite;
 }
 
-/* Luxurious card: ivory gradient sheet with a gold hairline */
+/* Luxurious card: off-white gradient sheet with a silver hairline */
 .lux-card {
-  background: linear-gradient(165deg, #fffdf9 0%, #faf5ec 55%, #f5eddf 100%);
-  border: 1px solid rgba(176, 137, 79, 0.28);
-  box-shadow: 0 50px 80px -40px rgba(60, 44, 30, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: linear-gradient(165deg, #ffffff 0%, #faf9fe 55%, #f3f2fa 100%);
+  border: 1px solid rgba(150, 145, 180, 0.28);
+  box-shadow: 0 50px 80px -40px rgba(90, 80, 130, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
-/* Thin gold divider gradient */
+/* Thin silver divider gradient */
 .gold-rule {
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(176, 137, 79, 0.65),
+    rgba(150, 145, 180, 0.6),
     transparent
   );
 }

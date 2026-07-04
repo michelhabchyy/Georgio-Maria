@@ -3,7 +3,6 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { rsvp, type RsvpResult } from "./actions";
 import { party } from "@/lib/config";
-import RingGraphic from "./ring";
 
 // The user clicks the envelope and the invitation is shown — no animation.
 export default function Invite() {
@@ -62,7 +61,7 @@ function Invitation() {
         <ScrollHint />
         <RsvpSection />
         {party.signature && (
-          <p className="mt-16 text-center font-script text-2xl text-[#6b5385]">
+          <p className="mt-16 text-center font-script text-2xl text-[#8b78b8]">
             {party.signature}
           </p>
         )}
@@ -75,17 +74,15 @@ function Invitation() {
 function Letter() {
   return (
     <section className="lux-card overflow-hidden rounded-[26px] px-7 py-14 text-center sm:px-14">
-      <RingGraphic className="mx-auto -mt-2 mb-3 h-28 w-28 sm:h-32 sm:w-32" />
-
-      <p className="font-sans text-[11px] uppercase tracking-[0.5em] text-[#a07a3f]">
+      <p className="font-script text-5xl leading-none text-[#a99cd6]">
         {party.eyebrow}
       </p>
 
-      <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#3a2b53] sm:text-6xl">
+      <h1 className="mt-5 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
         {party.title}
       </h1>
       {party.subtitle && (
-        <p className="mt-3 font-script text-3xl text-[#6b5385]">
+        <p className="mt-3 font-script text-3xl text-[#8b78b8]">
           {party.subtitle}
         </p>
       )}
@@ -103,13 +100,13 @@ function Letter() {
       </dl>
 
       {party.note && (
-        <p className="mx-auto mt-10 max-w-sm font-display text-base leading-relaxed text-[#8c7ea0]">
+        <p className="mx-auto mt-10 max-w-sm font-display text-base leading-relaxed text-[#9f95bd]">
           {party.note}
         </p>
       )}
 
       {party.secretNote && (
-        <p className="mx-auto mt-10 max-w-xs border-t border-[#e3d7bf] pt-6 font-display text-base italic leading-relaxed text-[#6b5385]">
+        <p className="mx-auto mt-10 max-w-xs border-t border-[#dcdae6] pt-6 font-display text-base italic leading-relaxed text-[#8b78b8]">
           {party.secretNote}
         </p>
       )}
@@ -132,10 +129,10 @@ function Detail({
   if (parts.length === 0) return null;
   return (
     <div>
-      <dt className="font-sans text-[10px] uppercase tracking-[0.4em] text-[#a07a3f]">
+      <dt className="font-sans text-[10px] uppercase tracking-[0.4em] text-[#9494a8]">
         {label}
       </dt>
-      <dd className="mt-1.5 font-display text-2xl text-[#3a2b53]">
+      <dd className="mt-1.5 font-display text-2xl text-[#6a58a0]">
         {parts.map((p, i) => (
           <span key={i} className="block leading-snug">
             {p}
@@ -147,7 +144,7 @@ function Detail({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-block border-b border-[#d8c9a8] pb-0.5 font-sans text-[11px] uppercase tracking-[0.25em] text-[#a07a3f] transition-colors hover:border-[#b0894f] hover:text-[#3a2b53]"
+          className="mt-3 inline-block border-b border-[#d3d0e0] pb-0.5 font-sans text-[11px] uppercase tracking-[0.25em] text-[#9494a8] transition-colors hover:border-[#9494a8] hover:text-[#6a58a0]"
         >
           View on map
         </a>
@@ -160,7 +157,7 @@ function Ornament() {
   return (
     <div className="my-10 flex items-center justify-center gap-4">
       <span className="gold-rule w-20" />
-      <span className="text-[0.6rem] text-[#b0894f]">◆</span>
+      <span className="text-[0.6rem] text-[#9494a8]">◆</span>
       <span className="gold-rule w-20" />
     </div>
   );
@@ -169,10 +166,10 @@ function Ornament() {
 function ScrollHint() {
   return (
     <div className="mt-10 flex flex-col items-center gap-2.5">
-      <span className="font-sans text-[10px] uppercase tracking-[0.45em] text-[#a07a3f]">
+      <span className="font-sans text-[10px] uppercase tracking-[0.45em] text-[#9494a8]">
         Scroll
       </span>
-      <span className="animate-softpulse h-9 w-px bg-gradient-to-b from-[#b0894f] to-transparent" />
+      <span className="animate-softpulse h-9 w-px bg-gradient-to-b from-[#9494a8] to-transparent" />
     </div>
   );
 }
@@ -197,9 +194,8 @@ function RsvpSection() {
     >
       {state?.ok ? (
         <div className="flex flex-col items-center gap-5 text-center">
-          {state.attending && <RingGraphic className="h-20 w-20" />}
-          <p className="font-script text-3xl text-[#6b5385]">Thank you</p>
-          <p className="max-w-sm font-display text-xl leading-relaxed text-[#3a2b53]">
+          <p className="font-script text-3xl text-[#8b78b8]">Thank you</p>
+          <p className="max-w-sm font-display text-xl leading-relaxed text-[#6a58a0]">
             {state.attending ? party.rsvp.thanksYes : party.rsvp.thanksNo}
           </p>
           {!state.saved && (
@@ -211,10 +207,10 @@ function RsvpSection() {
       ) : (
         <form action={formAction} className="flex flex-col gap-5">
           <div className="text-center">
-            <h2 className="font-display text-3xl font-medium text-[#3a2b53]">
+            <h2 className="font-display text-3xl font-medium text-[#6a58a0]">
               {party.rsvp.prompt}
             </h2>
-            <p className="mt-2 font-display text-base text-[#8c7ea0]">
+            <p className="mt-2 font-display text-base text-[#9f95bd]">
               {party.rsvp.intro}
             </p>
           </div>
@@ -223,7 +219,7 @@ function RsvpSection() {
             name="name"
             required
             placeholder="Your name"
-            className="w-full rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-lg text-[#3a2b53] placeholder:text-[#b8aac4] focus:border-[#b0894f] focus:outline-none"
+            className="w-full rounded-xl border border-[#dcdae6] bg-[#fbfaff] px-4 py-3.5 font-display text-lg text-[#6a58a0] placeholder:text-[#b8aac4] focus:border-[#9494a8] focus:outline-none"
           />
 
           <input type="hidden" name="attending" value={attending} />
@@ -241,12 +237,12 @@ function RsvpSection() {
           </div>
 
           {party.rsvp.askPlusOne && attending === "yes" && (
-            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-base text-[#3a2b53] transition-colors hover:border-[#b0894f]">
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#dcdae6] bg-[#fbfaff] px-4 py-3.5 font-display text-base text-[#6a58a0] transition-colors hover:border-[#9494a8]">
               <input
                 type="checkbox"
                 name="guests"
                 value="1"
-                className="h-5 w-5 accent-[#b0894f]"
+                className="h-5 w-5 accent-[#9494a8]"
               />
               {party.rsvp.plusOneLabel}
             </label>
@@ -257,7 +253,7 @@ function RsvpSection() {
               name="message"
               rows={4}
               placeholder={party.rsvp.messageLabel}
-              className="w-full rounded-xl border border-[#e3d7bf] bg-[#fdfaf3] px-4 py-3.5 font-display text-lg text-[#3a2b53] placeholder:text-[#b8aac4] focus:border-[#b0894f] focus:outline-none"
+              className="w-full rounded-xl border border-[#dcdae6] bg-[#fbfaff] px-4 py-3.5 font-display text-lg text-[#6a58a0] placeholder:text-[#b8aac4] focus:border-[#9494a8] focus:outline-none"
             />
           )}
 
@@ -268,7 +264,7 @@ function RsvpSection() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-2 rounded-full bg-gradient-to-b from-[#d8bd84] to-[#b3894c] px-8 py-4 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-[#3a2b53] shadow-[0_14px_28px_-10px_rgba(120,90,40,0.6),inset_0_1px_0_rgba(255,255,255,0.5)] transition-transform hover:scale-[1.015] hover:from-[#e2c890] hover:to-[#bd935a] disabled:opacity-60"
+            className="mt-2 rounded-full bg-gradient-to-b from-[#ececf3] to-[#bcbcce] px-8 py-4 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-[#5b4d8a] shadow-[0_14px_28px_-10px_rgba(120,120,150,0.5),inset_0_1px_0_rgba(255,255,255,0.7)] transition-transform hover:scale-[1.015] hover:from-[#f2f2f7] hover:to-[#c7c7d6] disabled:opacity-60"
           >
             {pending ? "Sending…" : "Send to the couple"}
           </button>
@@ -293,8 +289,8 @@ function Choice({
       onClick={onClick}
       className={`flex-1 rounded-xl border px-4 py-3 font-sans text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
         active
-          ? "border-[#3a2b53] bg-[#3a2b53] text-[#f7f0e4]"
-          : "border-[#e3d7bf] text-[#8c7ea0] hover:text-[#3a2b53]"
+          ? "border-[#6a58a0] bg-[#6a58a0] text-[#ffffff]"
+          : "border-[#dcdae6] text-[#9f95bd] hover:text-[#6a58a0]"
       }`}
     >
       {label}
