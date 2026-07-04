@@ -4,8 +4,8 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 export const party = {
-  // Big icon shown at the top of the invitation.
-  icon: "🤫",
+  // Big script line shown at the top of the invitation.
+  eyebrow: "Shhh...",
 
   // The big title of the invitation.
   title: "He's about to ask her forever!",

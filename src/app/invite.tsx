@@ -63,9 +63,9 @@ function Invitation() {
 function Letter() {
   return (
     <section className="lux-card overflow-hidden rounded-[26px] px-7 py-14 text-center sm:px-14">
-      <div className="text-7xl leading-none" aria-hidden>
-        {party.icon}
-      </div>
+      <p className="font-script text-7xl leading-none text-[#33303d] sm:text-8xl">
+        {party.eyebrow}
+      </p>
 
       <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
         {party.title}
