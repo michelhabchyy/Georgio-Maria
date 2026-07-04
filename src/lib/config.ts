@@ -48,7 +48,7 @@ export const party = {
     intro: "Add your name and a message to confirm you'll be there.",
     // Show a "+1" checkbox so guests can bring one extra person.
     askPlusOne: true,
-    plusOneLabel: "I'm bringing a +1",
+    plusOneLabel: "I'm bringing a partner along.",
     // Let guests leave a short note.
     askMessage: true,
     messageLabel: "A message for the couple",
