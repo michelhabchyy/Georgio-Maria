@@ -49,7 +49,7 @@ export const party = {
       { icon: "heart", label: "The Celebration" },
     ],
     // Closing note under the timeline.
-    closing: "No gifts, please — only your presence is required.",
+    closing: "No charges. Only your presence is required.",
   },
 
   // Signature at the bottom of the invitation. Leave "" to hide.
