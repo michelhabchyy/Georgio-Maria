@@ -8,8 +8,8 @@ export const party = {
   eyebrow: "",
 
   // The big title of the invitation.
-  title: "He's about to ask her forever!",
-
+  title: "He's going to propose!",
+  note: "",
   // Who / what it's for. Leave "" to hide.
   subtitle: "Georgio & Maria",
 
@@ -25,7 +25,7 @@ export const party = {
 
   // Optional extras — set to "" to hide.
   dressCode: "Smart casual",
-  note: "",
+  
 
   // The big reminder that it's a secret.
   secretNote: "Our little secret, until the right moment!",
