@@ -13,46 +13,42 @@ export default function Invite() {
   return <SealedEnvelope onOpen={() => setRevealed(true)} />;
 }
 
-// The sealed envelope. A gentle fade on click, then the invitation appears.
+// The sealed envelope with "Can you keep a secret?" on the front. On click the
+// flap lifts and the invitation is shown.
 function SealedEnvelope({ onOpen }: { onOpen: () => void }) {
-  const [fading, setFading] = useState(false);
+  const [opening, setOpening] = useState(false);
 
   function open() {
-    if (fading) return;
-    setFading(true);
-    setTimeout(onOpen, 450);
+    if (opening) return;
+    setOpening(true);
+    setTimeout(onOpen, 900);
   }
 
   return (
-    <div className={`reveal-scene ${fading ? "is-fading" : ""}`}>
+    <div className="reveal-scene">
       <button
         type="button"
         onClick={open}
         aria-label="Open the invitation"
         className="cursor-pointer border-0 bg-transparent p-0 transition-transform hover:scale-[1.02]"
       >
-        <div className="env-stage">
-          <div className="env-back" />
-          <div className="flap flap-left" />
-          <div className="flap flap-right" />
-          <div className="flap flap-bottom" />
-          <div className="env-names">
-            <span className="n">{party.coupleOne}</span>
-            <span className="andw">and</span>
-            <span className="n">{party.coupleTwo}</span>
-          </div>
-          <div className="flap flap-top" />
+        <div className={`envelope ${opening ? "is-open" : ""}`}>
+          <span className="env-body" />
+          <span className="env-pocket" />
+          <span className="env-front">
+            <span className="env-title">{party.envelopeText}</span>
+          </span>
+          <span className="env-flap" />
         </div>
       </button>
 
-      <div className="flex flex-col items-center gap-3">
-        <p className="font-script text-3xl leading-none text-[#8a6fb8]">
-          {party.envelopeText}
-        </p>
-        <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] animate-softpulse">
-          tap to open
-        </p>
-      </div>
+      <p
+        className={`font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] transition-opacity duration-300 ${
+          opening ? "opacity-0" : "animate-softpulse"
+        }`}
+      >
+        tap to open
+      </p>
     </div>
   );
 }

@@ -68,166 +68,76 @@ body {
   transform-style: preserve-3d;
 }
 
-/*
-  A real envelope built from four flaps that tile the rectangle exactly —
-  top, bottom, left, right — all meeting at the centre. Because they cover the
-  whole area with no gaps, the letter simply sits BEHIND them and slides up out
-  of the top, just like the real thing.
-*/
-
-/* Envelope back wall (the surface the letter rests against) */
-.env-back {
+/* A simple envelope with "Can you keep a secret?" embossed on the front. */
+.envelope {
+  position: relative;
+  width: 340px;
+  height: 226px;
+  max-width: 86vw;
+  filter: drop-shadow(0 34px 40px rgba(74, 54, 26, 0.4));
+}
+.env-body {
   position: absolute;
   inset: 0;
-  border-radius: 8px;
-  background: linear-gradient(160deg, #b7a0e2 0%, #a184d2 100%);
+  border-radius: 10px;
+  background: linear-gradient(155deg, #efe0c3 0%, #e0cba4 55%, #d3bd96 100%);
+  box-shadow: inset 0 0 0 1px rgba(184, 151, 95, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -18px 34px -18px rgba(74, 54, 26, 0.35);
   z-index: 1;
 }
-
-/* The letter, tucked inside; slides straight up on open */
-.pull-card {
+.env-pocket {
   position: absolute;
-  left: 28px;
-  right: 28px;
-  top: 18px;
-  height: 202px;
-  border-radius: 6px;
-  background: linear-gradient(160deg, #ffffff 0%, #f6f1fb 100%);
-  box-shadow: 0 2px 8px rgba(96, 72, 148, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 132px solid rgba(255, 252, 244, 0.16);
+  max-width: 86vw;
   z-index: 2;
-  transform: translateY(0);
-  transition: transform 1.4s cubic-bezier(0.22, 0.8, 0.24, 1),
-    box-shadow 1.4s ease;
 }
-.env-stage.is-pulled .pull-card {
-  transform: translateY(-206px);
-  box-shadow: 0 40px 60px -24px rgba(96, 72, 148, 0.5);
-}
-
-/* The four flaps. All share this base; each gets its own clip + shade. */
-.flap {
-  position: absolute;
-  inset: 0;
-}
-.flap-left {
-  clip-path: polygon(0 0, 0 100%, 50% 50%);
-  background: linear-gradient(90deg, #a88ed8, #b49ce0);
-  z-index: 3;
-}
-.flap-right {
-  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
-  background: linear-gradient(270deg, #a88ed8, #b49ce0);
-  z-index: 3;
-}
-.flap-bottom {
-  clip-path: polygon(0 100%, 100% 100%, 50% 50%);
-  background: linear-gradient(0deg, #a184d2, #b39cdf);
-  border-radius: 0 0 8px 8px;
-  z-index: 4;
-}
-/* subtle seam where the flaps fold to the centre */
-.flap-bottom::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  clip-path: inherit;
-  background: linear-gradient(
-        to top right,
-        transparent calc(50% - 0.5px),
-        rgba(255, 255, 255, 0.22) 50%,
-        transparent calc(50% + 0.5px)
-      )
-      left / 50% 100% no-repeat,
-    linear-gradient(
-        to top left,
-        transparent calc(50% - 0.5px),
-        rgba(255, 255, 255, 0.22) 50%,
-        transparent calc(50% + 0.5px)
-      )
-      right / 50% 100% no-repeat;
-}
-
-/* the couple's names in white script on the front */
-.env-names {
+.env-front {
   position: absolute;
   left: 0;
   right: 0;
-  top: 60%;
+  top: 122px;
+  bottom: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  line-height: 0.86;
-  color: #ffffff;
-  z-index: 5;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 3;
   pointer-events: none;
-  text-shadow: 0 2px 12px rgba(80, 54, 130, 0.35);
 }
-.env-names .n {
+.env-title {
   font-family: var(--font-script), "Segoe Script", cursive;
   font-size: 34px;
+  line-height: 1.05;
+  max-width: 280px;
+  text-align: center;
+  color: #6b4aa6;
+  /* Extruded 3D lettering: stacked purple layers + a soft cast shadow */
+  text-shadow: 0 1px 0 #5f3f97, 0 2px 0 #543688, 0 3px 0 #492f78,
+    0 5px 9px rgba(46, 28, 74, 0.4);
 }
-.env-names .andw {
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 17px;
-  opacity: 0.92;
-}
-
-/* Top flap — opens up and back on a hinge at the top edge */
-.flap-top {
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background: linear-gradient(180deg, #c6b4ea, #b39cdf);
-  border-radius: 8px 8px 0 0;
-  transform-origin: top center;
-  transition: transform 0.9s cubic-bezier(0.5, 0, 0.2, 1),
-    opacity 0.4s ease 0.6s;
-  filter: drop-shadow(0 6px 6px rgba(96, 72, 148, 0.28));
-  backface-visibility: hidden;
-  z-index: 6;
-}
-.env-stage.is-open .flap-top {
-  transform: rotateX(-172deg);
-  z-index: 1;
-}
-.env-stage.is-pulled .flap-top {
-  opacity: 0;
-}
-
-/* ── Video intro overlay ──────────────────────────────────────────────── */
-.intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(160deg, #ffffff 0%, #f2ebfb 100%);
-  cursor: pointer;
-  transition: opacity 0.7s ease;
-}
-.intro-overlay.is-fading {
-  opacity: 0;
-  pointer-events: none;
-}
-.intro-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.intro-tap {
+.env-flap {
   position: absolute;
-  bottom: 11%;
+  top: 0;
   left: 0;
   right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  pointer-events: none;
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
+  height: 122px;
+  background: linear-gradient(to bottom, #ecd7af 0%, #ddc79f 70%, #d5bd93 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.7s ease, opacity 0.5s ease 0.3s;
+  filter: drop-shadow(0 8px 6px rgba(74, 54, 26, 0.35));
+  z-index: 4;
+}
+.envelope.is-open .env-flap {
+  transform: rotateX(-172deg);
+  z-index: 0;
 }
 
 /* ── Motion helpers ───────────────────────────────────────────────────── */
