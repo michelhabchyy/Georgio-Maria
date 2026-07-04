@@ -4,50 +4,39 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { rsvp, type RsvpResult } from "./actions";
 import { party } from "@/lib/config";
 
-// The user clicks the envelope and the invitation is shown — no animation.
+// The user clicks the text and the invitation is shown.
 export default function Invite() {
   const [revealed, setRevealed] = useState(false);
 
   if (revealed) return <Invitation />;
-  return <SealedEnvelope onOpen={() => setRevealed(true)} />;
+  return <Intro onOpen={() => setRevealed(true)} />;
 }
 
-// The sealed envelope with "Can you keep a secret?" on the front. On click the
-// flap lifts and the invitation is shown.
-function SealedEnvelope({ onOpen }: { onOpen: () => void }) {
-  const [opening, setOpening] = useState(false);
+// Just the "Can you keep a secret?" line with a "tap to open" prompt, centered.
+function Intro({ onOpen }: { onOpen: () => void }) {
+  const [fading, setFading] = useState(false);
 
   function open() {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(onOpen, 900);
+    if (fading) return;
+    setFading(true);
+    setTimeout(onOpen, 550);
   }
 
   return (
-    <div className="reveal-scene">
+    <div className={`reveal-scene ${fading ? "is-fading" : ""}`}>
       <button
         type="button"
         onClick={open}
         aria-label="Open the invitation"
-        className="cursor-pointer border-0 bg-transparent p-0 transition-transform hover:scale-[1.02]"
+        className="flex cursor-pointer flex-col items-center gap-6 border-0 bg-transparent p-8 transition-transform hover:scale-[1.02]"
       >
-        <div className={`envelope ${opening ? "is-open" : ""}`}>
-          <span className="env-body" />
-          <span className="env-pocket" />
-          <span className="env-front">
-            <span className="env-title">{party.envelopeText}</span>
-          </span>
-          <span className="env-flap" />
-        </div>
+        <p className="font-display text-4xl leading-tight text-[#6a58a0] sm:text-5xl">
+          {party.envelopeText}
+        </p>
+        <p className="font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] animate-softpulse">
+          tap to open
+        </p>
       </button>
-
-      <p
-        className={`font-sans text-[11px] uppercase tracking-[0.45em] text-[#9a86c4] transition-opacity duration-300 ${
-          opening ? "opacity-0" : "animate-softpulse"
-        }`}
-      >
-        tap to open
-      </p>
     </div>
   );
 }
@@ -74,11 +63,11 @@ function Invitation() {
 function Letter() {
   return (
     <section className="lux-card overflow-hidden rounded-[26px] px-7 py-14 text-center sm:px-14">
-      <p className="font-script text-5xl leading-none text-[#a99cd6]">
-        {party.eyebrow}
-      </p>
+      <div className="text-7xl leading-none" aria-hidden>
+        {party.icon}
+      </div>
 
-      <h1 className="mt-5 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
+      <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.08] text-[#6a58a0] sm:text-6xl">
         {party.title}
       </h1>
       {party.subtitle && (

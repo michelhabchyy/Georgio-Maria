@@ -4,8 +4,8 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 export const party = {
-  // Small line above the title.
-  eyebrow: "SHHH...",
+  // Big icon shown at the top of the invitation.
+  icon: "🤫",
 
   // The big title of the invitation.
   title: "He's about to ask her forever!",
@@ -16,8 +16,8 @@ export const party = {
   // The essentials. Any field left as "" is simply not shown.
   date: "Thursday August 13, 2026",
   time: "8:00 PM",
-  location: "Villa Olea",
-  address: "Mehrin",
+  location: "Villa Olea - Mehrine",
+  address: "",
 
   // Paste your Google Maps link here (e.g. https://maps.app.goo.gl/xxxx or a
   // full https://www.google.com/maps/... URL). Leave "" to hide the map link.
